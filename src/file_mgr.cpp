@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <sys/stat.h> 
 #include <assert.h>
 #include <string.h>
 #include "define.h"
@@ -33,11 +34,13 @@ int DirFiles(const char *file_path, std::vector<std::string> &files) {
     		break;
 		}
 		
-		// ., .. not and to vector 
-		if (entry->d_namlen > 3) {
-			sprintf(file_name, "%s%s", file_path, entry->d_name);
-   			files.push_back(file_name);
+		// current dir OR parrent dir
+		if ((0 == strcmp(entry->d_name,".")) || (0 == strcmp(entry->d_name,".."))) {
+			continue;
 		}
+            
+		sprintf(file_name, "%s%s", file_path, entry->d_name);
+		files.push_back(file_name);
 	}
 
     closedir(dirptr);
@@ -155,13 +158,17 @@ long long CReadFile::FileSize() {
 	
 	assert(NULL != m_hfile);
 	
-	fpos_t pos = 0;
-    fseeko64(m_hfile, 0, SEEK_END);
-    fgetpos(m_hfile, &pos);
-    fseeko64(m_hfile, 0, SEEK_SET);
-    
-    //printf("debug: CReadFile::FileSize file:%s, size: %d\n",m_file_name, pos);    
-    return pos;
+	struct stat statbuf; 
+  	stat(filename,&statbuf); 
+  	long long size = statbuf.st_size; 
+  
+  	return size; 
+	
+	//	fpos_t pos = 0;
+	//    fseeko64(m_hfile, 0, SEEK_END);
+	//    fgetpos(m_hfile, &pos);
+	//    fseeko64(m_hfile, 0, SEEK_SET);
+	//    return pos;
 }
 
 
