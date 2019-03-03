@@ -150,16 +150,16 @@ int CSpiltBigFile::Split(const char *big_file_name) {
 								CReadFile
 *****************************************************************************/
 long long CReadFile::FileSize() {
-	int code = init();
-	if (CODE_SUCC != code) {
-		printf("WARNING: CReadFile::init fail, ret:%d\n", code);
-		return 0;
-	}
-	
-	assert(NULL != m_hfile);
+	//	int code = init();
+	//	if (CODE_SUCC != code) {
+	//		printf("WARNING: CReadFile::init fail, ret:%d\n", code);
+	//		return 0;
+	//	}
+	//	
+	//	assert(NULL != m_hfile);
 	
 	struct stat statbuf; 
-  	stat(filename,&statbuf); 
+  	stat(m_file_name, &statbuf); 
   	long long size = statbuf.st_size; 
   
   	return size; 
