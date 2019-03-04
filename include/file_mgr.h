@@ -44,7 +44,8 @@ class CSpiltBigFile {
 		
 		char m_split_c;
 		
-		DISALLOW_COPY_AND_ASSIGN(CSpiltBigFile);
+		CSpiltBigFile(const CSpiltBigFile &);
+		void operator=(const CSpiltBigFile&);
 };
 
 
@@ -72,7 +73,9 @@ class CReadFile {
 				
 		int init();
 		void clear();
-		DISALLOW_COPY_AND_ASSIGN(CReadFile);
+		
+		CReadFile(const CReadFile &);
+		void operator=(const CReadFile&);
 };
 
 // write line to file
@@ -97,7 +100,9 @@ class CWriteFile {
 
 		bool m_inited;
 		void clear();
-		DISALLOW_COPY_AND_ASSIGN(CWriteFile);
+		
+		CWriteFile(const CWriteFile &);
+		void operator=(const CWriteFile&);
 };
 
 

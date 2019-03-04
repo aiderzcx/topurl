@@ -27,7 +27,8 @@ class CTopUrlCount {
 		unsigned int m_size;
 		unsigned int m_len;
 		
-		DISALLOW_COPY_AND_ASSIGN(CTopUrlCount);
+		CTopUrlCount(const CTopUrlCount &);
+		void operator=(const CTopUrlCount&);
 };
 
 

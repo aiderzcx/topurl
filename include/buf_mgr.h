@@ -38,7 +38,8 @@ class CDataBuf {
 		unsigned int m_len;
 		unsigned int m_cur;
 		
-		DISALLOW_COPY_AND_ASSIGN(CDataBuf);
+		CDataBuf(const CDataBuf &);
+		void operator=(const CDataBuf&);
 };
 
 

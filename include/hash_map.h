@@ -37,7 +37,8 @@ class CHashMap{
 		std::map<std::string, int>::iterator m_iter;
 		bool m_bnext;
 		
-		DISALLOW_COPY_AND_ASSIGN(CHashMap);
+		CHashMap(const CHashMap &);
+		void operator=(const CHashMap&);
 };
 
 #endif //_HASH_MAP_H_
