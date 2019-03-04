@@ -1,6 +1,7 @@
 CC = g++
 
-SRCS = $(wildcard *.cpp ../src/*.cpp)
+ALL_SRCS = $(wildcard *.cpp ../src/*.cpp)
+SRCS = $(filter-out ../src/main.cpp, $(ALL_SRCS))  
 OBJS = $(SRCS:.cpp = .o)
 
 INCLUDES = -I../include 
@@ -11,12 +12,12 @@ OUTPUT = topurl_test
 all:$(OUTPUT)
 
 $(OUTPUT) : $(OBJS)
-    $(CC) $^ -o $@ $(INCLUDES)
+	$(CC) $^ -o $@ $(INCLUDES)
 
 %.o : %.cpp
-    $(CC) -E $< $(CCFLAGS)
+	$(CC) -E $< $(CCFLAGS)
 
 clean:
-    rm -rf *.out *.o topurl_test
+	rm -rf *.out *.o topurl_test
 
 .PHONY:clean
