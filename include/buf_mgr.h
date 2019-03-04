@@ -33,7 +33,7 @@ class CDataBuf {
 		void Reset(unsigned int len);
 		
 	private:
-		char *m_buf;
+		char *m_buf; // m_buf is a share buf, it update by CReadFile or CWriteFile
 		unsigned int m_size;
 		unsigned int m_len;
 		unsigned int m_cur;

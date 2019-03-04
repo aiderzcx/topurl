@@ -9,7 +9,10 @@
 #include "file_mgr.h"
 #include "hash_map.h"
 
-
+// count file's url repeat number
+// input: file_name
+// output: CHashMap &hash_map
+// return: succ: CODE_SUCC, fail: other..
 int FileCount(const char *file_name, CHashMap &hash_map){
 	CReadFile read_file(file_name, READ_FILE_BUF_SIZE, SPLIT_C);
 	

@@ -14,7 +14,11 @@ const int FILE_PATH_LEN = 512;
 
 const char *SMALL_FILE_PRE = "small_file";
 
-// list files of the dir
+
+//	list files of the dir, 
+//  input: file_path
+// 	output: vector<string> &files, 
+// 	return : succc: CODE_SUCC 
 int DirFiles(const char *file_path, std::vector<std::string> &files) {
 	assert(NULL != file_path);
 	
@@ -22,7 +26,7 @@ int DirFiles(const char *file_path, std::vector<std::string> &files) {
     struct dirent *entry = NULL;
 
     if ((dirptr = opendir(file_path)) == NULL) {
-        printf("DirFiles opendir(%s) fail\n", file_path);
+        printf("WARNING: DirFiles opendir(%s) fail\n", file_path);
         return CODE_DIR_NOT_EXIST;
     }
     
@@ -47,9 +51,11 @@ int DirFiles(const char *file_path, std::vector<std::string> &files) {
     return CODE_SUCC;
 }
 
-
+// remove files under the input file_path
 void RemoveDirFiles(const char *file_path){
-	std::vector<std::string> files(10);
+	assert(NULL != file_path);
+	
+	std::vector<std::string> files;
 	DirFiles(file_path, files);
 	
 	for (int i=0; i < files.size(); i++) {
@@ -58,14 +64,13 @@ void RemoveDirFiles(const char *file_path){
 }
 
 
-
-
 /*****************************************************************************
 								CSpiltBigFile
 *****************************************************************************/
 CSpiltBigFile::CSpiltBigFile(const char *small_file_path, unsigned int small_file_num, char split_c) {
 	if (NULL == small_file_path || small_file_num == 0) {
-		printf("CSpiltBigFile::CSpiltBigFile input err, small_file_path: %s, small_file_num: %d\n", small_file_path,small_file_num);
+		printf("WARNING: CSpiltBigFile::CSpiltBigFile input err, small_file_path: %s, small_file_num: %d\n", 
+			small_file_path, small_file_num);
 		return;
 	}
 	
@@ -73,9 +78,9 @@ CSpiltBigFile::CSpiltBigFile(const char *small_file_path, unsigned int small_fil
 	m_small_file_num = small_file_num;
 	m_file_path_len = strlen(small_file_path);
 	
-	m_small_file_path = (char *)malloc(m_file_path_len+64); // 64 for small file name
+	m_small_file_path = (char *)malloc(m_file_path_len+64); // 64 for small file name,small_file name append the path
 	if (NULL == m_small_file_path) {
-		printf("CSpiltBigFile::CSpiltBigFile m_small_file_path = malloc(%d) fail\n", m_file_path_len+64);
+		printf("WARNING: CSpiltBigFile::CSpiltBigFile m_small_file_path = malloc(%d) fail\n", m_file_path_len+64);
 		return; 
 	}
 	strcpy(m_small_file_path, small_file_path);
@@ -84,7 +89,7 @@ CSpiltBigFile::CSpiltBigFile(const char *small_file_path, unsigned int small_fil
 	if (NULL == m_small_files) {
 		free(m_small_file_path);
 		m_small_file_path = NULL;
-		printf("CSpiltBigFile::CSpiltBigFile new CWriteFile[%d] fail\n", small_file_num);
+		printf("WARNING: CSpiltBigFile::CSpiltBigFile new CWriteFile[%d] fail\n", small_file_num);
 		return;
 	}
 	
@@ -94,7 +99,7 @@ CSpiltBigFile::CSpiltBigFile(const char *small_file_path, unsigned int small_fil
 		
 		result = m_small_files[i].init(m_small_file_path, READ_FILE_BUF_SIZE);
 		if (CODE_SUCC != result) {
-			printf("CSpiltBigFile::CSpiltBigFile CWriteFile::init(%s): %d fail\n", m_small_file_path, result);
+			printf("WARNING: CSpiltBigFile::CSpiltBigFile CWriteFile::init(%s): %d fail\n", m_small_file_path, result);
 		}
 	}
 	
@@ -115,7 +120,7 @@ CSpiltBigFile::~CSpiltBigFile(){
 
 int CSpiltBigFile::Split(const char *big_file_name) {
 	if (NULL == big_file_name) {
-		printf("CSpiltBigFile::Split big_file_name is null\n");
+		printf("WARNING: CSpiltBigFile::Split big_file_name is null\n");
 		return CODE_INPUT_ERR;
 	}
 	
@@ -179,30 +184,30 @@ CReadFile::CReadFile(const char *file_name, unsigned int read_buf_size, char spl
 	m_inited = false;
 	
 	if (NULL == file_name) {
+		printf("WARNING: CReadFile::CReadFile input file_name is null\n");
 		return ;
 	}
 	
 	int len = strlen(file_name);
 	m_file_name = (char *)malloc(len+1);
 	if (NULL == m_file_name) {
-		printf("CReadFile::CReadFile m_file_name=malloc(%d) fail\n", len+1);
+		printf("WARNING: CReadFile::CReadFile m_file_name=malloc(%d) fail\n", len+1);
 		return;
 	}
-	
 	strcpy(m_file_name, file_name);
 	
 	m_buf = (char *)malloc(m_read_buf_size+1);
 	if (NULL == m_buf) {
 		clear();
-		printf("CReadFile::CReadFile m_readbuf=malloc(%d) fail\n", m_read_buf_size);
+		printf("WARNING: CReadFile::CReadFile m_readbuf=malloc(%d) fail\n", m_read_buf_size);
 		return;
 	}
 	m_buf[m_read_buf_size] = '\0';
 	
-	m_data = new CDataBuf(m_buf, 0, READ_FILE_BUF_SIZE);
+	m_data = new CDataBuf(m_buf, 0, read_buf_size);
 	if (NULL == m_data) {
 		clear();
-		printf("CReadFile::CReadFile m_data = new CDataBuf fail\n");
+		printf("WARNING: CReadFile::CReadFile m_data = new CDataBuf fail\n");
 		return;
 	}
 	
@@ -214,7 +219,7 @@ CReadFile::~CReadFile(){
 	clear();
 }
 
-// read 8k data from file, and return online, 
+// read 8k data from file, and return one line, 
 unsigned int CReadFile::ReadLine(char *buf, unsigned int len){
 	assert(NULL != buf && len > 0);
 	
@@ -248,7 +253,7 @@ unsigned int CReadFile::ReadLine(char *buf, unsigned int len){
 				m_buf[0] = '\0';
 				read_file_len = fread(m_buf, 1, m_read_buf_size, m_hfile);
 				if (read_file_len == 0) {
-					printf("INFO CReadFile::ReadLine file: %s, read finished\n", m_file_name);
+					printf("INFO: CReadFile::ReadLine file: %s, read finished\n", m_file_name);
 					return read_len;
 				}
 				
@@ -256,7 +261,7 @@ unsigned int CReadFile::ReadLine(char *buf, unsigned int len){
 				break;
 			
 			default:
-				printf("CReadFile::ReadLine m_data.GetDataWithSplitC return.code(%d)\n", result.code);
+				printf("ERROR: CReadFile::ReadLine m_data.GetDataWithSplitC return.code(%d)\n", result.code);
 				return 0;
 		}
 	}while (read_len < len);
@@ -268,13 +273,13 @@ int CReadFile::init(){
 	}
 	
 	if (NULL == m_file_name) {
-		printf("CReadFile::init m_file_name is null\n");
+		printf("ERROR: CReadFile::init m_file_name is null\n");
 		return CODE_FAIL;
 	}
 		
 	m_hfile = fopen(m_file_name, "r");
 	if (NULL == m_hfile) {
-		printf("CReadFile::init fopen(%s) fail\n", m_file_name);
+		printf("WARNING: CReadFile::init fopen(%s) fail\n", m_file_name);
 		return CODE_OPEN_FILE_FAIL;
 	}
 	
@@ -331,7 +336,6 @@ unsigned int  CWriteFile::Write(const char *buf, unsigned int len){
 				
 			case BUF_FULL:
 				Flush();
-				m_data->Reset(0);
 				break;
 			
 			default:
@@ -349,6 +353,7 @@ int CWriteFile::Flush() {
 	unsigned int data_len = m_data->DataLen();
 	if (data_len > 0) {
 		fwrite(m_buf, sizeof(char), data_len, m_hfile);
+		m_data->Reset(0);
 	}
 	
 	//printf("CWriteFile::Flush file: %s, data_len: %d\n", m_file_name, data_len);
