@@ -43,6 +43,8 @@ class CSpiltBigFile {
 		CWriteFile *m_small_files;
 		
 		char m_split_c;
+		
+		DISALLOW_COPY_AND_ASSIGN(CSpiltBigFile);
 };
 
 
@@ -70,6 +72,7 @@ class CReadFile {
 				
 		int init();
 		void clear();
+		DISALLOW_COPY_AND_ASSIGN(CReadFile);
 };
 
 // write line to file
@@ -94,6 +97,7 @@ class CWriteFile {
 
 		bool m_inited;
 		void clear();
+		DISALLOW_COPY_AND_ASSIGN(CWriteFile);
 };
 
 

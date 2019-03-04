@@ -36,6 +36,8 @@ class CHashMap{
 		unsigned int m_next_idx;
 		std::map<std::string, int>::iterator m_iter;
 		bool m_bnext;
+		
+		DISALLOW_COPY_AND_ASSIGN(CHashMap);
 };
 
 #endif //_HASH_MAP_H_

@@ -37,6 +37,8 @@ class CDataBuf {
 		unsigned int m_size;
 		unsigned int m_len;
 		unsigned int m_cur;
+		
+		DISALLOW_COPY_AND_ASSIGN(CDataBuf);
 };
 
 

@@ -22,6 +22,8 @@ class CUrlInfo {
 		unsigned int m_count;
 		
 		void clear();
+		
+		CUrlInfo(const CUrlInfo &);
 };
 
 #endif // _URL_INFO_H_

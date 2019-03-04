@@ -26,6 +26,8 @@ class CTopUrlCount {
 		CUrlInfo **m_top_arry;
 		unsigned int m_size;
 		unsigned int m_len;
+		
+		DISALLOW_COPY_AND_ASSIGN(CTopUrlCount);
 };
 
 
