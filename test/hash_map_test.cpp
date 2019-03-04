@@ -1,4 +1,5 @@
 #include "test_inc.h"
+#include <stdio.h>
 #include <string.h>
 #include <map>
 #include <string>

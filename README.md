@@ -1,6 +1,18 @@
 # topurl
     big file save url， count top 100 url 
 
+## use
+    cd src:
+    	make clean
+		make	
+    	./topurl ../test/bigfile/ ../test/smallfiles/
+    
+    testcase:
+    	cd test
+		make clean
+		make
+		./topurl_test	
+
 ## execution flow
 	1. get big-file path and small-file path from the args
 	2. list the big files
