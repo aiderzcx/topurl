@@ -10,8 +10,8 @@ using namespace std;
 // Split big file test
 
 int CSplitBigFileTest() {
-	const char *big_file_name = "h:/github.com/myprj/bigfile/top_url_count.txt";
-	const char *small_file_path = "h:/github.com/myprj/smallfiles/";
+	const char *big_file_name = "./bigfile/";
+	const char *small_file_path = "./smallfiles/";
 	unsigned int small_file_num = 4;
 	
 	CSpiltBigFile split_file(small_file_path, small_file_num, '\n');
